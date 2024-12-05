@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurar e Alterar Produto - Eletricar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Procurar e Alterar Produto</h1>
+        
+        <form id="searchForm">
+            <label for="produtoBusca">Código ou Nome do Produto:</label>
+            <input type="text" id="produtoBusca" required placeholder="Digite o código ou nome do produto">
+            <button type="submit" class="circle-button">Buscar</button>
+        </form>
+
+        <div id="produtoEncontrado" class="produto-info">
+            <h2>Produto Encontrado</h2>
+            <p><strong>Nome:</strong> <span id="nomeProduto"></span></p>
+            <p><strong>Código:</strong> <span id="codigoProduto"></span></p>
+            <p><strong>Marca:</strong> <span id="marcaProduto"></span></p>
+            <p><strong>Preço de Custo:</strong> R$ <span id="precoCustoProduto"></span></p>
+            <p><strong>Preço de Venda:</strong> R$ <span id="precoVendaProduto"></span></p>
+
+            <h3>Alterar Dados do Produto</h3>
+            <form id="alterarForm">
+                <label for="novoNome">Novo Nome:</label>
+                <input type="text" id="novoNome" placeholder="Nome" required>
+
+                <label for="novoCodigo">Novo Código:</label>
+                <input type="text" id="novoCodigo" placeholder="Código" required>
+
+                <label for="novoPrecoCusto">Novo Preço de Custo:</label>
+                <input type="number" id="novoPrecoCusto" placeholder="Preço de Custo" step="0.01" required>
+
+                <label for="novoPrecoVenda">Novo Preço de Venda:</label>
+                <input type="number" id="novoPrecoVenda" placeholder="Preço de Venda" step="0.01" required>
+
+                <button type="submit" class="circle-button">Alterar</button>
+            </form>
+        </div>
+        
+        <a href="index.html" class="back-button">Voltar</a> <!-- Botão para voltar -->
+    </div>
+
+    <script>
+        // Função para buscar e alterar o produto
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const produtoBusca = document.getElementById('produtoBusca').value.trim().toLowerCase();
+            const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+
+            // Procurar produto no localStorage
+            let produto = produtos.find(p => p.codigo.toLowerCase() === produtoBusca || p.nome.toLowerCase() === produtoBusca);
+
+            if (!produto) {
+                alert('Produto não encontrado!');
+                return;
+            }
+
+            // Exibir os dados do produto encontrado
+            document.getElementById('nomeProduto').textContent = produto.nome;
+            document.getElementById('codigoProduto').textContent = produto.codigo;
+            document.getElementById('marcaProduto').textContent = produto.marca;
+            document.getElementById('precoCustoProduto').textContent = produto.precoCusto.toFixed(2);
+            document.getElementById('precoVendaProduto').textContent = produto.precoVenda.toFixed(2);
+
+            // Exibir formulário de alteração
+            document.getElementById('alterarForm').style.display = 'block';
+            document.getElementById('alterarForm').onsubmit = function(event) {
+                event.preventDefault();
+
+                // Capturar novos dados inseridos
+                const novoNome = document.getElementById('novoNome').value;
+                const novoCodigo = document.getElementById('novoCodigo').value;
+                const novoPrecoCusto = parseFloat(document.getElementById('novoPrecoCusto').value);
+                const novoPrecoVenda = parseFloat(document.getElementById('novoPrecoVenda').value);
+
+                // Alterar o produto no array
+                produto.nome = novoNome;
+                produto.codigo = novoCodigo;
+                produto.precoCusto = novoPrecoCusto;
+                produto.precoVenda = novoPrecoVenda;
+
+                // Atualizar o localStorage
+                const index = produtos.findIndex(p => p.codigo === produto.codigo);
+                produtos[index] = produto;
+                localStorage.setItem('produtos', JSON.stringify(produtos));
+
+                // Exibir mensagem de sucesso
+                alert('Produto alterado com sucesso!');
+
+                // Limpar o formulário e voltar
+                document.getElementById('alterarForm').reset();
+                document.getElementById('alterarForm').style.display = 'none';
+                document.getElementById('produtoBusca').value = '';
+            };
+        });
+    </script>
+</body>
+</html>

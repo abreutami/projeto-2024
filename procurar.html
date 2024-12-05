@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurar Produto - Eletricar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Procurar Produto</h1>
+        
+        <!-- Campo de pesquisa -->
+        <input type="text" id="searchInput" placeholder="Digite o nome ou código da peça" required>
+        
+        <!-- Botão de buscar -->
+        <button id="searchButton" class="circle-button">Procurar</button>
+
+        <!-- Exibição do resultado da pesquisa -->
+        <div id="resultado" class="resultado"></div>
+        
+        <a href="cadastro.html" class="back-button">Voltar</a> <!-- Botão para voltar -->
+    </div>
+
+    <script>
+        // Adicionando o evento para o botão "Procurar"
+        document.getElementById('searchButton').addEventListener('click', function() {
+            // Obtendo o valor inserido no campo de pesquisa
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            
+            // Verifica se o campo de pesquisa está vazio
+            if (searchTerm === '') {
+                alert('Por favor, insira um termo de pesquisa!');
+                return;
+            }
+
+            // Obtendo os produtos do localStorage
+            const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+            
+            // Filtra os produtos que contenham o nome ou código que correspondem ao termo de pesquisa
+            const resultado = produtos.filter(produto => 
+                produto.nome.toLowerCase().includes(searchTerm) || 
+                produto.codigo.toLowerCase().includes(searchTerm)
+            );
+
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = ''; // Limpa os resultados anteriores
+
+            // Exibe os resultados
+            if (resultado.length > 0) {
+                resultado.forEach(produto => {
+                    const div = document.createElement('div');
+                    div.classList.add('resultado-item');
+                    div.innerHTML = `
+                        <strong>Nome:</strong> ${produto.nome} <br>
+                        <strong>Código:</strong> ${produto.codigo} <br>
+                        <strong>Marca:</strong> ${produto.marca} <br>
+                        <strong>Preço de Custo:</strong> R$ ${produto.precoCusto.toFixed(2)} <br>
+                        <strong>Preço de Venda:</strong> R$ ${produto.precoVenda.toFixed(2)} <br>
+                        <hr>
+                    `;
+                    resultadoDiv.appendChild(div);
+                });
+            } else {
+                resultadoDiv.innerHTML = '<p>Nenhum produto encontrado.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

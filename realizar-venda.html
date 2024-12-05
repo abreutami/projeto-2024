@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realizar Venda - Eletricar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Realizar Venda</h1>
+        <form id="vendaForm">
+            <label for="codigoProduto">Código do Produto:</label>
+            <input type="text" id="codigoProduto" required>
+            
+            <div id="produtoInfo" style="display:none;">
+                <strong>Nome:</strong> <span id="produtoNome"></span><br>
+                <strong>Marca:</strong> <span id="produtoMarca"></span><br>
+                <strong>Preço:</strong> R$ <span id="produtoPreco"></span><br>
+                <strong>Estoque:</strong> <span id="produtoEstoque"></span><br>
+            </div>
+
+            <label for="quantidade">Quantidade:</label>
+            <input type="number" id="quantidade" required min="1">
+
+            <button type="submit" class="circle-button">Realizar Venda</button>
+        </form>
+        
+        <a href="index.html" class="back-button">Voltar</a> <!-- Botão para voltar -->
+    </div>
+
+    <script>
+        // Função para buscar o produto pelo código e exibir as informações
+        document.getElementById('codigoProduto').addEventListener('input', function() {
+            const codigo = this.value.trim();  // Pega o código digitado
+            const produtos = JSON.parse(localStorage.getItem('produtos')) || [];  // Carrega os produtos do localStorage
+
+            // Se o campo de código não estiver vazio
+            if (codigo !== "") {
+                // Busca o produto pelo código
+                const produto = produtos.find(p => p.codigo === codigo);
+
+                // Se o produto for encontrado
+                if (produto) {
+                    document.getElementById('produtoNome').textContent = produto.nome;
+                    document.getElementById('produtoMarca').textContent = produto.marca;
+                    document.getElementById('produtoPreco').textContent = produto.precoVenda.toFixed(2);
+                    document.getElementById('produtoEstoque').textContent = produto.estoque || "Sem Estoque";
+                    document.getElementById('produtoInfo').style.display = 'block';  // Exibe as informações do produto
+                } else {
+                    // Caso o produto não seja encontrado
+                    document.getElementById('produtoInfo').style.display = 'none';  // Oculta as informações
+                }
+            } else {
+                // Caso o campo de código esteja vazio
+                document.getElementById('produtoInfo').style.display = 'none';  // Oculta as informações
+            }
+        });
+
+        // Função para realizar a venda
+        document.getElementById('vendaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const codigo = document.getElementById('codigoProduto').value.trim();
+            const quantidade = parseInt(document.getElementById('quantidade').value);
+            const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+            const vendas = JSON.parse(localStorage.getItem('vendas')) || [];
+
+            // Encontra o produto
+            const produto = produtos.find(p => p.codigo === codigo);
+
+            if (produto && produto.estoque >= quantidade) {
+                // Atualiza o estoque do produto
+                produto.estoque -= quantidade;
+                localStorage.setItem('produtos', JSON.stringify(produtos));
+
+                // Adiciona a venda no localStorage
+                const venda = {
+                    codigo: produto.codigo,
+                    nome: produto.nome,
+                    quantidade: quantidade,
+                    preco: produto.precoVenda,
+                    data: new Date().toLocaleString(),
+                };
+                vendas.push(venda);
+                localStorage.setItem('vendas', JSON.stringify(vendas));
+
+                alert('Venda realizada com sucesso!');
+                document.getElementById('vendaForm').reset();
+                document.getElementById('produtoInfo').style.display = 'none';
+            } else {
+                alert('Produto não encontrado ou estoque insuficiente!');
+            }
+        });
+    </script>
+</body>
+</html>

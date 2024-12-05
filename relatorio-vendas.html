@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Vendas - Eletricar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Relatório de Vendas</h1>
+        
+        <div class="button-container">
+            <button id="consultarButton" class="circle-button">Consultar</button>
+        </div>
+        
+        <div id="searchSection" style="display:none;">
+            <label for="searchInput">Buscar por Código ou Nome:</label>
+            <input type="text" id="searchInput" placeholder="Digite o código ou nome do produto">
+            <button id="buscarButton" class="circle-button">Buscar</button>
+        </div>
+
+        <div id="vendasRelatorio"></div>
+
+        <a href="index.html" class="back-button">Voltar</a> <!-- Botão para voltar -->
+    </div>
+
+    <script>
+        // Exibe a barra de pesquisa quando clicar em "Consultar"
+        document.getElementById('consultarButton').addEventListener('click', function() {
+            document.getElementById('searchSection').style.display = 'block';
+            document.getElementById('vendasRelatorio').innerHTML = '';  // Limpa o relatório
+        });
+
+        // Função de busca e exibição das vendas
+        document.getElementById('buscarButton').addEventListener('click', function() {
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            const vendas = JSON.parse(localStorage.getItem('vendas')) || [];
+            const resultado = vendas.filter(venda => 
+                venda.codigo.toLowerCase().includes(searchTerm) || 
+                venda.nome.toLowerCase().includes(searchTerm)
+            );
+
+            const relatorioDiv = document.getElementById('vendasRelatorio');
+            relatorioDiv.innerHTML = ''; // Limpa o relatório
+
+            if (resultado.length > 0) {
+                resultado.forEach(venda => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+                        <strong>Produto:</strong> ${venda.nome} <br>
+                        <strong>Código:</strong> ${venda.codigo} <br>
+                        <strong>Quantidade Vendida:</strong> ${venda.quantidade} <br>
+                        <strong>Preço Unitário:</strong> R$ ${venda.preco.toFixed(2)} <br>
+                        <strong>Data da Venda:</strong> ${venda.data} <br>
+                        <hr>
+                    `;
+                    relatorioDiv.appendChild(div);
+                });
+            } else {
+                relatorioDiv.innerHTML = '<p>Nenhuma venda encontrada para este produto.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

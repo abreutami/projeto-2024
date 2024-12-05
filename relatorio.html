@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Vendas - Eletricar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Relatório de Vendas</h1>
+        
+        <!-- Botão "Consultar" e Barra de Pesquisa -->
+        <div id="searchContainer">
+            <button id="consultarButton" class="circle-button">Consultar</button>
+            <input type="text" id="searchInput" class="search-input" placeholder="Digite o código ou nome do produto" style="display:none;">
+            <button id="searchButton" class="circle-button" style="display:none;">Buscar</button>
+        </div>
+
+        <!-- Exibição dos resultados das vendas -->
+        <div id="vendasRelatorio"></div>
+
+        <a href="index.html" class="back-button">Voltar</a>
+    </div>
+
+    <script>
+        // Mostrar barra de pesquisa quando clicar em "Consultar"
+        document.getElementById('consultarButton').addEventListener('click', function() {
+            document.getElementById('searchInput').style.display = 'inline-block';
+            document.getElementById('searchButton').style.display = 'inline-block';
+        });
+
+        // Função para buscar vendas de um produto
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim(); // Pega o texto da pesquisa
+            const vendas = JSON.parse(localStorage.getItem('vendas')) || []; // Carrega as vendas do localStorage
+            const produtos = JSON.parse(localStorage.getItem('produtos')) || []; // Carrega os produtos cadastrados do localStorage
+
+            // Encontra o produto com base no código ou nome digitado
+            const produtoEncontrado = produtos.find(produto => 
+                produto.nome.toLowerCase().includes(searchTerm) || 
+                produto.codigo.toLowerCase().includes(searchTerm)
+            );
+
+            // Verifica se o produto foi encontrado
+            if (produtoEncontrado) {
+                // Filtra as vendas do produto
+                const vendasProduto = vendas.filter(venda => venda.codigo === produtoEncontrado.codigo);
+
+                // Exibe as vendas do produto encontrado
+                const resultadoDiv = document.getElementById('vendasRelatorio');
+                resultadoDiv.innerHTML = ''; // Limpa os resultados anteriores
+
+                if (vendasProduto.length > 0) {
+                    vendasProduto.forEach(venda => {
+                        const div = document.createElement('div');
+                        div.innerHTML = `
+                            <strong>Produto:</strong> ${produtoEncontrado.nome} <br>
+                            <strong>Código:</strong> ${produtoEncontrado.codigo} <br>
+                            <strong>Preço de Venda:</strong> R$ ${produtoEncontrado.precoVenda.toFixed(2)} <br>
+                            <strong>Data da Venda:</strong> ${venda.data} <br>
+                            <strong>Quantidade Vendida:</strong> ${venda.quantidade} <br>
+                            <strong>Total da Venda:</strong> R$ ${(venda.quantidade * produtoEncontrado.precoVenda).toFixed(2)} <br>
+                            <hr>
+                        `;
+                        resultadoDiv.appendChild(div);
+                    });
+                } else {
+                    resultadoDiv.innerHTML = '<p>Nenhuma venda encontrada para este produto.</p>';
+                }
+            } else {
+                // Se o produto não for encontrado
+                alert('Produto não encontrado.');
+            }
+        });
+    </script>
+</body>
+</html>

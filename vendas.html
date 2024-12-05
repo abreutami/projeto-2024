@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realizar Venda - Eletricar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Realizar Venda</h1>
+
+        <form id="vendaForm">
+            <label for="codigoProduto">Código do Produto:</label>
+            <input type="text" id="codigoProduto" required>
+
+            <label for="quantidade">Quantidade:</label>
+            <input type="number" id="quantidade" required min="1">
+
+            <button type="submit" class="circle-button">Realizar Venda</button>
+        </form>
+
+        <div id="produtoInfo"></div> <!-- Exibe as informações do produto a ser vendido -->
+
+        <a href="index.html" class="back-button">Voltar</a> <!-- Botão para voltar -->
+    </div>
+
+    <script>
+        // Função para realizar a venda
+        document.getElementById('vendaForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio normal do formulário
+
+            const codigoProduto = document.getElementById('codigoProduto').value.trim();
+            const quantidade = parseInt(document.getElementById('quantidade').value);
+            const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+            const produto = produtos.find(p => p.codigo === codigoProduto); // Procura o produto pelo código
+
+            if (produto) {
+                // Calcula o total da venda
+                const total = produto.precoVenda * quantidade;
+
+                // Exibe as informações do produto que será vendido
+                document.getElementById('produtoInfo').innerHTML = `
+                    <p><strong>Produto:</strong> ${produto.nome}</p>
+                    <p><strong>Código:</strong> ${produto.codigo}</p>
+                    <p><strong>Preço de Venda:</strong> R$ ${produto.precoVenda.toFixed(2)}</p>
+                    <p><strong>Quantidade:</strong> ${quantidade}</p>
+                    <p><strong>Total:</strong> R$ ${total.toFixed(2)}</p>
+                `;
+
+                // Registra a venda no localStorage
+                const venda = {
+                    nome: produto.nome,
+                    codigo: produto.codigo,
+                    quantidade: quantidade,
+                    precoVenda: produto.precoVenda,
+                    total: total,
+                    data: new Date().toLocaleDateString() // Data da venda
+                };
+
+                // Pega as vendas anteriores ou cria um array vazio se não houver vendas
+                let vendas = JSON.parse(localStorage.getItem('vendas')) || [];
+                vendas.push(venda); // Adiciona a nova venda
+                localStorage.setItem('vendas', JSON.stringify(vendas)); // Salva as vendas no localStorage
+
+                alert('Venda realizada com sucesso!');
+                document.getElementById('vendaForm').reset(); // Limpa o formulário
+                document.getElementById('produtoInfo').innerHTML = ''; // Limpa as informações do produto
+            } else {
+                alert('Produto não encontrado!');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Produtos - Eletricar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Produtos Cadastrados</h1>
+        
+        <!-- Container onde a lista de produtos será exibida -->
+        <div id="produtosLista"></div>
+
+        <a href="index.html" class="back-button">Voltar</a> <!-- Botão para voltar -->
+    </div>
+
+    <script>
+        // Função para exibir a lista de produtos
+        function exibirProdutos() {
+            const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+            const listaDiv = document.getElementById('produtosLista');
+
+            // Limpar a lista antes de adicionar os novos produtos
+            listaDiv.innerHTML = '';
+
+            if (produtos.length > 0) {
+                const lista = document.createElement('ul');
+
+                // Iterar sobre os produtos e criar uma lista
+                produtos.forEach(produto => {
+                    const item = document.createElement('li');
+                    item.innerHTML = `
+                        <strong>Nome:</strong> ${produto.nome} 
+                        <br><strong>Código:</strong> ${produto.codigo} 
+                        <br><strong>Marca:</strong> ${produto.marca} 
+                        <br><strong>Preço de Custo:</strong> R$ ${produto.precoCusto.toFixed(2)} 
+                        <br><strong>Preço de Venda:</strong> R$ ${produto.precoVenda.toFixed(2)} 
+                        <hr>
+                    `;
+                    lista.appendChild(item);
+                });
+
+                listaDiv.appendChild(lista);
+            } else {
+                listaDiv.innerHTML = '<p>Nenhum produto cadastrado.</p>';
+            }
+        }
+
+        // Chama a função para exibir a lista de produtos ao carregar a página
+        exibirProdutos();
+    </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+/* Estilo geral da página */
+body { 
+    font-family: Arial, sans-serif;
+    background-color: #3b5998; /* Azul marinho confortável */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column; /* Adicionando coluna para alinhar melhor os elementos */
+}
+
+.container {
+    text-align: center;
+    color: white; /* Texto branco para melhor contraste */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o conteúdo */
+}
+
+h1 {
+    font-size: 32px; /* Diminui o tamanho da fonte */
+    margin-top: 20px; /* Adiciona um pouco de margem superior */
+    margin-bottom: 20px; /* Mantém espaço inferior */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espaçamento entre os botões */
+    flex-wrap: wrap; /* Permite que os botões se ajustem melhor quando necessário */
+}
+
+.circle-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    background-color: #dc3545; /* Cor de fundo vermelha */
+    color: white;
+    text-decoration: none;
+    border-radius: 75px; /* Botões circulares */
+    font-size: 20px;
+    transition: background-color 0.3s;
+}
+
+.circle-button:hover {
+    background-color: #c82333; /* Cor do botão ao passar o mouse */
+}
+
+/* Estilo para o botão "Realizar Venda" (retangular e verde) */
+button.circle-button {
+    background-color: #28a745; /* Cor verde para o botão de venda */
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px; /* Botão retangular */
+    border-radius: 5px; /* Bordas suavizadas */
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transição suave ao passar o mouse */
+    width: 200px; /* Definindo uma largura fixa para o botão */
+    text-align: center; /* Centraliza o texto dentro do botão */
+    margin-top: 0.5cm; /* Adicionando 0,5cm de espaçamento acima do botão */
+}
+
+/* Efeito de hover no botão de venda */
+button.circle-button:hover {
+    background-color: #218838; /* Verde mais escuro */
+}
+
+.back-button {
+    display: inline-block;
+    margin-top: 20px;
+    color: #28a745; /* Cor do texto para o botão de voltar */
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.back-button:hover {
+    text-decoration: underline; /* Efeito ao passar o mouse */
+}
+
+form {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column; /* Organiza os elementos do formulário em coluna */
+    align-items: center; /* Centraliza os campos dentro do form */
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    color: white;
+}
+
+input[type="text"], input[type="number"], input[type="date"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 200px;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus {
+    outline: none;
+    border: 1px solid #28a745; /* Cor verde ao focar no campo */
+}
+
+/* Estilo para a lista de produtos */
+#produtosLista {
+    margin-top: 30px;
+    text-align: left;
+    color: white;
+    max-width: 80%; /* Limitar a largura da lista */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#produtosLista ul {
+    list-style-type: none; /* Remove os marcadores da lista */
+    padding: 0;
+}
+
+#produtosLista li {
+    background-color: #444; /* Fundo escuro para cada item */
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+#produtosLista li strong {
+    color: #28a745; /* Verde para os rótulos */
+}
+
+/* Estilo para a borda inferior entre os itens */
+#produtosLista li hr {
+    border: 1px solid #28a745; /* Linha verde entre os itens */
+}
+
+/* Estilo para o relatório de vendas */
+#vendasRelatorio div {
+    margin-bottom: 20px;
+    text-align: left;
+    color: white;
+}
+
+#vendasRelatorio p {
+    margin: 5px 0;
+}
+
+#vendasRelatorio hr {
+    border: 1px solid #ccc;
+}
+
+/* Estilo para o produto encontrado durante a venda */
+#produtoInfo {
+    margin-top: 20px;
+    color: white;
+    text-align: left;
+}
+
+#produtoInfo p {
+    margin: 5px 0;
+}
+
+/* Estilo para a calculadora */
+.calculator {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    width: 250px; /* Diminui a largura */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: #333;
+}
+
+.calculator h2 {
+    font-size: 20px; /* Tamanho de fonte do título reduzido */
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.display {
+    width: 100%;
+    height: 35px; /* Diminuir altura do display */
+    margin-bottom: 15px;
+    font-size: 18px; /* Tamanho da fonte reduzido */
+    text-align: right;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px; /* Menos espaço entre os botões */
+}
+
+.button {
+    background-color: #28a745;
+    color: white;
+    font-size: 16px; /* Tamanho de fonte dos botões reduzido */
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #218838;
+}
+
+.button:active {
+    background-color: #1e7e34;
+}
+
+/* Estilo para os botões "consultar" e "buscar" */
+#consultarButton, #buscarButton {
+    width: 200px;
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#consultarButton:hover, #buscarButton:hover {
+    background-color: #218838;
+}
+
+#consultarButton:active, #buscarButton:active {
+    background-color: #1e7e34;
+}
+
+.search-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#searchInput {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 80%;
+    margin-bottom: 10px;
+}
+
+#searchInput:focus {
+    outline: none;
+    border: 1px solid #28a745;
+}

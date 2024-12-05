@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Eletricar</h1> <!-- Título alterado -->
+        <div class="button-container">
+            <a href="vendas.html" class="circle-button">Vendas</a>
+            <a href="cadastro.html" class="circle-button">Cadastro</a>
+            <a href="relatorio.html" class="circle-button">Relatório</a>
+        </div>
+    </div>
+</body>
+</html>
+<!-- Calculadora -->
+<div class="calculator">
+    <h2>Calculadora</h2>
+    <input type="text" id="display" disabled class="display" />
+
+    <div class="buttons">
+        <button class="button" onclick="appendNumber(7)">7</button>
+        <button class="button" onclick="appendNumber(8)">8</button>
+        <button class="button" onclick="appendNumber(9)">9</button>
+        <button class="button" onclick="appendOperator('+')">+</button>
+
+        <button class="button" onclick="appendNumber(4)">4</button>
+        <button class="button" onclick="appendNumber(5)">5</button>
+        <button class="button" onclick="appendNumber(6)">6</button>
+        <button class="button" onclick="appendOperator('-')">-</button>
+
+        <button class="button" onclick="appendNumber(1)">1</button>
+        <button class="button" onclick="appendNumber(2)">2</button>
+        <button class="button" onclick="appendNumber(3)">3</button>
+        <button class="button" onclick="appendOperator('*')">*</button>
+
+        <button class="button" onclick="appendNumber(0)">0</button>
+        <button class="button" onclick="clearDisplay()">C</button>
+        <button class="button" onclick="calculateResult()">=</button>
+        <button class="button" onclick="appendOperator('/')">/</button>
+    </div>
+</div>
+<script>
+    let currentInput = '';  // Armazena o que está sendo digitado
+    let operator = '';  // Armazena o operador para a operação
+
+    // Função para adicionar números ao display
+    function appendNumber(number) {
+        currentInput += number;
+        document.getElementById('display').value = currentInput;
+    }
+
+    // Função para adicionar operadores ao display
+    function appendOperator(op) {
+        if (currentInput !== '') {
+            currentInput += ' ' + op + ' ';
+            document.getElementById('display').value = currentInput;
+        }
+    }
+
+    // Função para limpar o display
+    function clearDisplay() {
+        currentInput = '';
+        document.getElementById('display').value = currentInput;
+    }
+
+    // Função para calcular o resultado
+    function calculateResult() {
+        try {
+            currentInput = eval(currentInput).toString();
+            document.getElementById('display').value = currentInput;
+        } catch (e) {
+            document.getElementById('display').value = 'Erro';
+            currentInput = '';
+        }
+    }
+</script>
